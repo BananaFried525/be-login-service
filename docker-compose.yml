@@ -1,0 +1,53 @@
+
+version: '3.8'
+
+services:
+#   app:
+#     build: .
+#     ports:
+#       - "50051:50051"
+#     depends_on:
+#       - db
+#     environment:
+#       DB_HOST: db
+#       DB_PORT: 5432
+#       DB_USER: user
+#       DB_PASSWORD: pass
+#       DB_NAME: appdb
+#     volumes:
+#       - .:/app
+#     restart: on-failure
+
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: database_pass
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - microservice-net
+
+  redis:
+    image: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: redis_pass
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - microservice-net
+
+volumes:
+  redisdata:
+  dbdata:
+
+networks:
+  microservice-net:
+    driver: bridge
