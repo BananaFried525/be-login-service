@@ -4,9 +4,13 @@ import (
 	"context"
 	repository "go-grpc-clean/internal/domain/repository"
 	domain "go-grpc-clean/internal/domain/user"
+	"go-grpc-clean/internal/pb"
 	"go-grpc-clean/internal/pkg/utils"
 	"go-grpc-clean/internal/shared/response"
 	"log"
+	"time"
+
+	"google.golang.org/protobuf/proto"
 )
 
 type UserUseCaseImpl struct {
@@ -15,9 +19,7 @@ type UserUseCaseImpl struct {
 
 // CreateUser implements domain.IUserRepository.
 func (u *UserUseCaseImpl) CreateUser(ctx context.Context, user *domain.User) (*domain.UserResponse, error) {
-	log.Printf("creating user: %v", user)
 	referralCode := utils.RandomString(12)
-
 	payload := &repository.UserModel{
 		ReferralCode: referralCode,
 		UserName:     user.UserName,
@@ -37,13 +39,27 @@ func (u *UserUseCaseImpl) CreateUser(ctx context.Context, user *domain.User) (*d
 		}, err
 	}
 
+	createdAt := resp.CreatedAt.Format(time.RFC3339)
+	updatedAt := resp.UpdatedAt.Format(time.RFC3339)
+
+	status := map[repository.UserStatus]pb.UserStatus{
+		repository.ACTIVE:    pb.UserStatus_ACTIVE,
+		repository.INACTIVE:  pb.UserStatus_INACTIVE,
+		repository.DELETED:   pb.UserStatus_DELETED,
+		repository.SUSPENDED: pb.UserStatus_INACTIVE,
+	}[resp.Status]
+
 	return &domain.UserResponse{
 		BaseResponse: response.BaseResponse[domain.User]{
 			Status: response.OK,
 			Data: domain.User{
-				ID:       resp.ID,
-				UserName: user.UserName,
-				Email:    user.Email,
+				ID:           proto.Int32(resp.ID),
+				ReferralCode: &resp.ReferralCode,
+				UserName:     user.UserName,
+				Email:        user.Email,
+				Status:       &status,
+				CreatedAt:    &createdAt,
+				UpdatedAt:    &updatedAt,
 			},
 		},
 	}, err
