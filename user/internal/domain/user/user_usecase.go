@@ -7,4 +7,5 @@ type IUserRepository interface {
 	GetUser(ctx context.Context, id string) (*UserResponse, error)
 	UpdateUser(ctx context.Context, user *User) (*UserResponse, error)
 	DeleteUser(ctx context.Context, id string) (*UserResponse, error)
+	GetUserByUserName(ctx context.Context, userName *string, email *string) (*UserResponse, error)
 }

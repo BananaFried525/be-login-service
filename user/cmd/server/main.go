@@ -40,7 +40,7 @@ func main() {
 	proto.RegisterUserServiceServer(server, grpcServer)
 	reflection.Register(server)
 
-	log.Printf(fmt.Sprintf("server listening at %s\n", listener.Addr().String()))
+	log.Printf("server listening at %s\n", listener.Addr().String())
 	if err := server.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

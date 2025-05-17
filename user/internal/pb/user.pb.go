@@ -404,6 +404,58 @@ func (x *DeleteUserRequest) GetReferralCode() string {
 	return ""
 }
 
+type GetUserByUserNameRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserName      *string                `protobuf:"bytes,1,opt,name=userName,proto3,oneof" json:"userName,omitempty"`
+	Email         *string                `protobuf:"bytes,2,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserByUserNameRequest) Reset() {
+	*x = GetUserByUserNameRequest{}
+	mi := &file_user_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserByUserNameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserByUserNameRequest) ProtoMessage() {}
+
+func (x *GetUserByUserNameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserByUserNameRequest.ProtoReflect.Descriptor instead.
+func (*GetUserByUserNameRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetUserByUserNameRequest) GetUserName() string {
+	if x != nil && x.UserName != nil {
+		return *x.UserName
+	}
+	return ""
+}
+
+func (x *GetUserByUserNameRequest) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
+}
+
 type UserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Status        MessageStatus          `protobuf:"varint,1,opt,name=status,proto3,enum=grpc.MessageStatus" json:"status,omitempty"`
@@ -414,7 +466,7 @@ type UserResponse struct {
 
 func (x *UserResponse) Reset() {
 	*x = UserResponse{}
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -426,7 +478,7 @@ func (x *UserResponse) String() string {
 func (*UserResponse) ProtoMessage() {}
 
 func (x *UserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -439,7 +491,7 @@ func (x *UserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserResponse.ProtoReflect.Descriptor instead.
 func (*UserResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{5}
+	return file_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UserResponse) GetStatus() MessageStatus {
@@ -487,7 +539,12 @@ const file_user_proto_rawDesc = "" +
 	"\x04user\x18\x02 \x01(\v2\n" +
 	".grpc.UserR\x04user\"7\n" +
 	"\x11DeleteUserRequest\x12\"\n" +
-	"\freferralCode\x18\x01 \x01(\tR\freferralCode\"[\n" +
+	"\freferralCode\x18\x01 \x01(\tR\freferralCode\"m\n" +
+	"\x18GetUserByUserNameRequest\x12\x1f\n" +
+	"\buserName\x18\x01 \x01(\tH\x00R\buserName\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\x02 \x01(\tH\x01R\x05email\x88\x01\x01B\v\n" +
+	"\t_userNameB\b\n" +
+	"\x06_email\"[\n" +
 	"\fUserResponse\x12+\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x13.grpc.MessageStatusR\x06status\x12\x1e\n" +
 	"\x04data\x18\x02 \x01(\v2\n" +
@@ -504,7 +561,7 @@ const file_user_proto_rawDesc = "" +
 	"\x06ACTIVE\x10\x00\x12\f\n" +
 	"\bINACTIVE\x10\x01\x12\v\n" +
 	"\aDELETED\x10\x02\x12\r\n" +
-	"\tSUSPENDED\x10\x032\xf3\x01\n" +
+	"\tSUSPENDED\x10\x032\xbc\x02\n" +
 	"\vUserService\x129\n" +
 	"\n" +
 	"CreateUser\x12\x17.grpc.CreateUserRequest\x1a\x12.grpc.UserResponse\x123\n" +
@@ -512,7 +569,8 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12\x17.grpc.UpdateUserRequest\x1a\x12.grpc.UserResponse\x129\n" +
 	"\n" +
-	"DeleteUser\x12\x17.grpc.DeleteUserRequest\x1a\x12.grpc.UserResponseB\x1bZ\x19go-grpc-clean/internal/pbb\x06proto3"
+	"DeleteUser\x12\x17.grpc.DeleteUserRequest\x1a\x12.grpc.UserResponse\x12G\n" +
+	"\x11GetUserByUserName\x12\x1e.grpc.GetUserByUserNameRequest\x1a\x12.grpc.UserResponseB\x1bZ\x19go-grpc-clean/internal/pbb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -527,36 +585,39 @@ func file_user_proto_rawDescGZIP() []byte {
 }
 
 var file_user_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_user_proto_goTypes = []any{
-	(MessageStatus)(0),        // 0: grpc.MessageStatus
-	(UserStatus)(0),           // 1: grpc.UserStatus
-	(*User)(nil),              // 2: grpc.User
-	(*CreateUserRequest)(nil), // 3: grpc.CreateUserRequest
-	(*GetUserRequest)(nil),    // 4: grpc.GetUserRequest
-	(*UpdateUserRequest)(nil), // 5: grpc.UpdateUserRequest
-	(*DeleteUserRequest)(nil), // 6: grpc.DeleteUserRequest
-	(*UserResponse)(nil),      // 7: grpc.UserResponse
+	(MessageStatus)(0),               // 0: grpc.MessageStatus
+	(UserStatus)(0),                  // 1: grpc.UserStatus
+	(*User)(nil),                     // 2: grpc.User
+	(*CreateUserRequest)(nil),        // 3: grpc.CreateUserRequest
+	(*GetUserRequest)(nil),           // 4: grpc.GetUserRequest
+	(*UpdateUserRequest)(nil),        // 5: grpc.UpdateUserRequest
+	(*DeleteUserRequest)(nil),        // 6: grpc.DeleteUserRequest
+	(*GetUserByUserNameRequest)(nil), // 7: grpc.GetUserByUserNameRequest
+	(*UserResponse)(nil),             // 8: grpc.UserResponse
 }
 var file_user_proto_depIdxs = []int32{
-	1, // 0: grpc.User.status:type_name -> grpc.UserStatus
-	2, // 1: grpc.CreateUserRequest.user:type_name -> grpc.User
-	2, // 2: grpc.UpdateUserRequest.user:type_name -> grpc.User
-	0, // 3: grpc.UserResponse.status:type_name -> grpc.MessageStatus
-	2, // 4: grpc.UserResponse.data:type_name -> grpc.User
-	3, // 5: grpc.UserService.CreateUser:input_type -> grpc.CreateUserRequest
-	4, // 6: grpc.UserService.GetUser:input_type -> grpc.GetUserRequest
-	5, // 7: grpc.UserService.UpdateUser:input_type -> grpc.UpdateUserRequest
-	6, // 8: grpc.UserService.DeleteUser:input_type -> grpc.DeleteUserRequest
-	7, // 9: grpc.UserService.CreateUser:output_type -> grpc.UserResponse
-	7, // 10: grpc.UserService.GetUser:output_type -> grpc.UserResponse
-	7, // 11: grpc.UserService.UpdateUser:output_type -> grpc.UserResponse
-	7, // 12: grpc.UserService.DeleteUser:output_type -> grpc.UserResponse
-	9, // [9:13] is the sub-list for method output_type
-	5, // [5:9] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1,  // 0: grpc.User.status:type_name -> grpc.UserStatus
+	2,  // 1: grpc.CreateUserRequest.user:type_name -> grpc.User
+	2,  // 2: grpc.UpdateUserRequest.user:type_name -> grpc.User
+	0,  // 3: grpc.UserResponse.status:type_name -> grpc.MessageStatus
+	2,  // 4: grpc.UserResponse.data:type_name -> grpc.User
+	3,  // 5: grpc.UserService.CreateUser:input_type -> grpc.CreateUserRequest
+	4,  // 6: grpc.UserService.GetUser:input_type -> grpc.GetUserRequest
+	5,  // 7: grpc.UserService.UpdateUser:input_type -> grpc.UpdateUserRequest
+	6,  // 8: grpc.UserService.DeleteUser:input_type -> grpc.DeleteUserRequest
+	7,  // 9: grpc.UserService.GetUserByUserName:input_type -> grpc.GetUserByUserNameRequest
+	8,  // 10: grpc.UserService.CreateUser:output_type -> grpc.UserResponse
+	8,  // 11: grpc.UserService.GetUser:output_type -> grpc.UserResponse
+	8,  // 12: grpc.UserService.UpdateUser:output_type -> grpc.UserResponse
+	8,  // 13: grpc.UserService.DeleteUser:output_type -> grpc.UserResponse
+	8,  // 14: grpc.UserService.GetUserByUserName:output_type -> grpc.UserResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -565,13 +626,14 @@ func file_user_proto_init() {
 		return
 	}
 	file_user_proto_msgTypes[0].OneofWrappers = []any{}
+	file_user_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

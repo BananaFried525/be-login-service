@@ -47,6 +47,11 @@ message DeleteUserRequest {
     string referralCode = 1;
 }
 
+message GetUserByUserNameRequest {
+    optional string userName = 1;
+    optional string email = 2;
+}
+
 message UserResponse {
     MessageStatus status = 1;
 	User data = 2;
@@ -57,4 +62,5 @@ service UserService {
 	rpc GetUser(GetUserRequest) returns (UserResponse);
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
     rpc DeleteUser(DeleteUserRequest) returns (UserResponse);
+    rpc GetUserByUserName(GetUserByUserNameRequest) returns(UserResponse);
 }

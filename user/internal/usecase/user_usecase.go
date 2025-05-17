@@ -80,6 +80,62 @@ func (u *UserUseCaseImpl) UpdateUser(ctx context.Context, user *domain.User) (*d
 	panic("unimplemented")
 }
 
+func (u *UserUseCaseImpl) GetUserByUserName(ctx context.Context, userName *string, email *string) (*domain.UserResponse, error) {
+	if userName == nil && email == nil {
+		return &domain.UserResponse{
+			BaseResponse: response.BaseResponse[domain.User]{
+				Status: response.BAD_REQUEST,
+				Data:   domain.User{},
+			},
+		}, nil
+	}
+
+	userRequest := &repository.UserModel{}
+	if userName != nil {
+		userRequest.UserName = *userName
+	}
+
+	if email != nil {
+		userRequest.Email = *email
+	}
+
+	resp, err := u.repo.FindOne(ctx, userRequest)
+	if err != nil {
+		return &domain.UserResponse{
+			BaseResponse: response.BaseResponse[domain.User]{
+				Status: response.NOT_FOUND,
+				Data:   domain.User{},
+			},
+		}, nil
+	}
+
+	// Format response
+	createdAt := resp.CreatedAt.Format(time.RFC3339)
+	updatedAt := resp.UpdatedAt.Format(time.RFC3339)
+
+	status := map[repository.UserStatus]pb.UserStatus{
+		repository.ACTIVE:    pb.UserStatus_ACTIVE,
+		repository.INACTIVE:  pb.UserStatus_INACTIVE,
+		repository.DELETED:   pb.UserStatus_DELETED,
+		repository.SUSPENDED: pb.UserStatus_INACTIVE,
+	}[resp.Status]
+
+	return &domain.UserResponse{
+		BaseResponse: response.BaseResponse[domain.User]{
+			Status: response.OK,
+			Data: domain.User{
+				ID:           proto.Int32(resp.ID),
+				ReferralCode: &resp.ReferralCode,
+				UserName:     resp.UserName,
+				Email:        resp.Email,
+				Status:       &status,
+				CreatedAt:    &createdAt,
+				UpdatedAt:    &updatedAt,
+			},
+		},
+	}, nil
+}
+
 func NewUserUseCase(r repository.UserRepository) domain.IUserRepository {
 	return &UserUseCaseImpl{repo: r}
 }
