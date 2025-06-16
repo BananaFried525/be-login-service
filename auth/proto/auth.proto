@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = "go-grpc-clean/internal/pb";
+
+message GetAnonymousTokenRequest {
+    string apiKey = 1;
+}
+
+message GetAnonymousTokenResponse {
+    string token = 1;
+    string tokenExpiration = 2;
+}
+
+service AuthService {
+    rpc GetAnonymousToken(GetAnonymousTokenRequest) returns (GetAnonymousTokenResponse);
+}

@@ -44,6 +44,19 @@ services:
     networks:
       - microservice-net
 
+  api-gateway:
+    image: envoyproxy/envoy:v1.29-latest
+    volumes:
+      - ./api-gateway/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "8080:8080"
+    depends_on:
+      - grpc-service
+    restart: on-failure
+    networks: 
+      - microservice-net
+    
+
 volumes:
   redisdata:
   dbdata:
